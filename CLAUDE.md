@@ -59,7 +59,7 @@ After every implementation block, all four must be green before moving on:
 
 ```bash
 pnpm typecheck    # tsc --noEmit
-pnpm lint         # next lint
+pnpm lint         # eslint . --max-warnings 0
 pnpm test         # vitest run (includes thinkingBudget:0 throws assertion)
 pnpm test:e2e     # playwright; candidate submit → scored within 30 s
 ```
