@@ -62,9 +62,7 @@ create policy "Anyone can submit a candidate"
   on public.candidates
   for insert
   to anon, authenticated
-  with check (
-    exists (select 1 from public.jobs j where j.id = candidates.job_id)
-  );
+  with check (true);
 
 create policy "Recruiters read their own candidates"
   on public.candidates

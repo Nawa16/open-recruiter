@@ -1,6 +1,5 @@
 import { createBrowserClient, createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
@@ -10,6 +9,7 @@ export function createBrowserSupabase() {
 }
 
 export async function createServerSupabase() {
+  const { cookies } = await import("next/headers");
   const store = await cookies();
   return createServerClient(url, anon, {
     cookies: {

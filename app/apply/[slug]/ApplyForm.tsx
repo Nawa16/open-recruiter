@@ -54,27 +54,22 @@ export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
       return;
     }
 
-    const insert = await supabase
-      .from("candidates")
-      .insert({
-        job_id: jobId,
-        full_name: parsed.data.fullName,
-        email: parsed.data.email,
-        phone: parsed.data.phone,
-        resume_path: resumePath,
-      })
-      .select("id")
-      .single();
-    if (insert.error || !insert.data) {
-      setState({
-        kind: "error",
-        message: insert.error?.message ?? "Submit failed.",
-      });
+    const candidateId = crypto.randomUUID();
+    const insert = await supabase.from("candidates").insert({
+      id: candidateId,
+      job_id: jobId,
+      full_name: parsed.data.fullName,
+      email: parsed.data.email,
+      phone: parsed.data.phone,
+      resume_path: resumePath,
+    });
+    if (insert.error) {
+      setState({ kind: "error", message: insert.error.message });
       return;
     }
 
     const invoked = await supabase.functions.invoke("score-candidate", {
-      body: { candidate_id: insert.data.id },
+      body: { candidate_id: candidateId },
     });
     if (invoked.error) {
       setState({
