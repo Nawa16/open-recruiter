@@ -72,7 +72,7 @@ Goal: a clean fork-and-run repo where `cp .env.example .env.local && pnpm i && p
 5. Calls Gemini 2.5 Flash with Thinking Mode again + 5-axis rubric + `scoreSchema`.
 6. Updates candidate: `parsed`, `score`, `rationale`, `status='scored'`.
 
-Helper at `supabase/functions/_shared/gemini.ts` is **byte-identical** to `lib/gemini.ts`.
+The `generate()` helper is inlined at the top of `supabase/functions/score-candidate/index.ts` and mirrors `lib/gemini.ts` exactly (same signature, same `thinkingBudget` default of `-1`, same throw on `0`); the only adaptations are Deno env access and `npm:` imports.
 
 ## Phase 8 — Tests
 
