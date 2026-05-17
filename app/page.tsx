@@ -1,8 +1,19 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { signInWithEmail } from "@/app/actions/auth";
 
-export default function HomePage() {
+type Search = Promise<{ error?: string; sent?: string }>;
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Search;
+}) {
+  const { error, sent } = await searchParams;
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-16">
+    <main className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-12">
       <header className="flex items-center justify-between">
         <span className="text-sm font-semibold tracking-tight">
           open-recruiter
@@ -17,65 +28,93 @@ export default function HomePage() {
         </a>
       </header>
 
-      <section className="mt-24 max-w-2xl">
-        <h1 className="text-4xl font-semibold tracking-tight">
-          A free, self-hosted recruiter portal.
-        </h1>
-        <p className="mt-4 text-base text-[color:var(--color-muted-foreground)]">
-          Paste a job description, share a public apply link, and rank applicants
-          automatically. Resumes are parsed and scored 0–100 against the JD by
-          Gemini 2.5 Flash with Thinking Mode.
-        </p>
-        <div className="mt-8 flex gap-3">
-          <Link
-            href="/dashboard"
-            className="rounded-md bg-[color:var(--color-accent)] px-4 py-2 text-sm font-medium text-[color:var(--color-accent-foreground)] hover:opacity-90"
-          >
-            Sign in
-          </Link>
-          <a
-            href="#how-it-works"
-            className="rounded-md border border-[color:var(--color-border)] px-4 py-2 text-sm font-medium hover:bg-[color:var(--color-muted)]"
-          >
-            How it works
-          </a>
+      <section className="mt-20 grid gap-12 lg:grid-cols-2 lg:items-start">
+        <div>
+          <h1 className="text-4xl font-semibold tracking-tight leading-tight">
+            A free, self-hosted recruiter portal.
+          </h1>
+          <p className="mt-4 text-base text-[color:var(--color-muted-foreground)]">
+            Paste a job description, share a public apply link, and rank
+            applicants automatically. Resumes are parsed and scored 0–100 by
+            Gemini 2.5 Flash with Thinking Mode.
+          </p>
+          <ul className="mt-6 space-y-2 text-sm text-[color:var(--color-muted-foreground)]">
+            <li>— MIT-licensed. No paywalls, no telemetry.</li>
+            <li>— One Supabase project. One Gemini key. Done.</li>
+            <li>— Deploy on Vercel Hobby or any Node 20+ host.</li>
+          </ul>
+        </div>
+
+        <div className="rounded-lg border border-[color:var(--color-border)] p-6">
+          <h2 className="text-sm font-semibold">Sign in</h2>
+          <p className="mt-1 text-sm text-[color:var(--color-muted-foreground)]">
+            We&apos;ll email you a magic link.
+          </p>
+          <form action={signInWithEmail} className="mt-4 space-y-3">
+            <div className="space-y-1">
+              <Label htmlFor="email">Work email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                required
+                placeholder="you@company.com"
+                autoComplete="email"
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Send magic link
+            </Button>
+            {sent ? (
+              <p className="text-xs text-[color:var(--color-muted-foreground)]">
+                Check your inbox. The link expires in 60 minutes.
+              </p>
+            ) : null}
+            {error ? (
+              <p className="text-xs text-[color:var(--color-destructive)]">
+                {error}
+              </p>
+            ) : null}
+          </form>
         </div>
       </section>
 
       <section id="how-it-works" className="mt-24 grid gap-8 sm:grid-cols-3">
-        <div>
-          <div className="text-xs font-semibold text-[color:var(--color-accent)]">
-            01
-          </div>
-          <h2 className="mt-2 text-sm font-semibold">Paste a JD</h2>
-          <p className="mt-1 text-sm text-[color:var(--color-muted-foreground)]">
-            Sign in, create a job, get a shareable apply link.
-          </p>
-        </div>
-        <div>
-          <div className="text-xs font-semibold text-[color:var(--color-accent)]">
-            02
-          </div>
-          <h2 className="mt-2 text-sm font-semibold">Candidates apply</h2>
-          <p className="mt-1 text-sm text-[color:var(--color-muted-foreground)]">
-            Name, email, phone, and a PDF or DOCX resume. No account needed.
-          </p>
-        </div>
-        <div>
-          <div className="text-xs font-semibold text-[color:var(--color-accent)]">
-            03
-          </div>
-          <h2 className="mt-2 text-sm font-semibold">Ranked list</h2>
-          <p className="mt-1 text-sm text-[color:var(--color-muted-foreground)]">
-            Each resume is parsed and scored by Gemini 2.5 Flash with Thinking
-            Mode and added to your dashboard.
-          </p>
-        </div>
+        <Step
+          n="01"
+          title="Paste a JD"
+          body="Sign in, create a job, get a shareable apply link."
+        />
+        <Step
+          n="02"
+          title="Candidates apply"
+          body="Name, email, phone, and a PDF or DOCX resume. No account needed."
+        />
+        <Step
+          n="03"
+          title="Ranked list"
+          body="Each resume is parsed and scored by Gemini 2.5 Flash with Thinking Mode and added to your dashboard."
+        />
       </section>
 
-      <footer className="mt-auto pt-24 text-xs text-[color:var(--color-muted-foreground)]">
-        MIT licensed. Bring your own Supabase project and Gemini API key.
+      <footer className="mt-auto pt-24 flex items-center justify-between text-xs text-[color:var(--color-muted-foreground)]">
+        <span>MIT licensed.</span>
+        <Link href="/dashboard">Go to dashboard →</Link>
       </footer>
     </main>
+  );
+}
+
+function Step({ n, title, body }: { n: string; title: string; body: string }) {
+  return (
+    <div>
+      <div className="text-xs font-semibold text-[color:var(--color-accent)]">
+        {n}
+      </div>
+      <h3 className="mt-2 text-sm font-semibold">{title}</h3>
+      <p className="mt-1 text-sm text-[color:var(--color-muted-foreground)]">
+        {body}
+      </p>
+    </div>
   );
 }
