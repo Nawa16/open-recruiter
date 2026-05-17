@@ -87,7 +87,7 @@ The `generate()` helper is inlined at the top of `supabase/functions/score-candi
 3. `pnpm test`
 4. `pnpm test:e2e` (with `.env.local` + deployed edge function)
 5. Fresh-clone: `cp .env.example .env.local && pnpm i && pnpm dev` → homepage renders.
-6. `grep -rEi "claude|anthropic|sonnet|haiku|opus|gpt|openai" --include="*.md" --include="*.ts" --include="*.tsx" --include="*.sql" .` → only literal filename `CLAUDE.md`.
+6. Run the model-name grep from the project spec across `*.md`, `*.ts`, `*.tsx`, and `*.sql`. The only allowed match anywhere in the repo is the literal filename `CLAUDE.md`.
 
 ## Commits
 

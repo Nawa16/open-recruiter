@@ -1,6 +1,6 @@
 # CLAUDE.md — open-recruiter
 
-Context for future Claude Code sessions working in this repo.
+Context for future coding-agent sessions working in this repo.
 
 ## Project purpose
 
@@ -64,12 +64,7 @@ pnpm test         # vitest run (includes thinkingBudget:0 throws assertion)
 pnpm test:e2e     # playwright; candidate submit → scored within 30 s
 ```
 
-Plus the model-name grep (must return only the literal filename `CLAUDE.md`):
-
-```bash
-grep -rEi "claude|anthropic|sonnet|haiku|opus|gpt|openai" \
-  --include="*.md" --include="*.ts" --include="*.tsx" --include="*.sql" .
-```
+Plus the model-name grep (see PLAN.md verification step 6 for the exact pattern) — running it must return only the literal filename of this file as a path component, with no body text matches anywhere in the repository.
 
 ## Scope reminders
 
