@@ -42,15 +42,5 @@
     "tsx": "^4.19.2",
     "typescript": "^5",
     "vitest": "^3.0.5"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "unrs-resolver",
-      "@tailwindcss/oxide",
-      "esbuild",
-      "@google/genai",
-      "protobufjs"
-    ]
   }
 }
