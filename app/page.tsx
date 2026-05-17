@@ -2,16 +2,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInWithEmail } from "@/app/actions/auth";
+import { signInWithPassword } from "@/app/actions/auth";
 
-type Search = Promise<{ error?: string; sent?: string }>;
+type Search = Promise<{ error?: string }>;
 
 export default async function HomePage({
   searchParams,
 }: {
   searchParams: Search;
 }) {
-  const { error, sent } = await searchParams;
+  const { error } = await searchParams;
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-12">
       <header className="flex items-center justify-between">
@@ -40,7 +40,7 @@ export default async function HomePage({
           </p>
           <ul className="mt-6 space-y-2 text-sm text-[color:var(--color-muted-foreground)]">
             <li>— MIT-licensed. No paywalls, no telemetry.</li>
-            <li>— One Supabase project. One Gemini key. Done.</li>
+            <li>— Recruiter account provisioned from environment variables.</li>
             <li>— Deploy on Vercel Hobby or any Node 20+ host.</li>
           </ul>
         </div>
@@ -48,28 +48,34 @@ export default async function HomePage({
         <div className="rounded-lg border border-[color:var(--color-border)] p-6">
           <h2 className="text-sm font-semibold">Sign in</h2>
           <p className="mt-1 text-sm text-[color:var(--color-muted-foreground)]">
-            We&apos;ll email you a magic link.
+            Email and password. No public signup.
           </p>
-          <form action={signInWithEmail} className="mt-4 space-y-3">
+          <form action={signInWithPassword} className="mt-4 space-y-3">
             <div className="space-y-1">
-              <Label htmlFor="email">Work email</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
                 required
-                placeholder="you@company.com"
                 autoComplete="email"
+                placeholder="you@company.com"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                required
+                autoComplete="current-password"
+                placeholder="••••••••"
               />
             </div>
             <Button type="submit" className="w-full">
-              Send magic link
+              Sign in
             </Button>
-            {sent ? (
-              <p className="text-xs text-[color:var(--color-muted-foreground)]">
-                Check your inbox. The link expires in 60 minutes.
-              </p>
-            ) : null}
             {error ? (
               <p className="text-xs text-[color:var(--color-destructive)]">
                 {error}
@@ -83,12 +89,12 @@ export default async function HomePage({
         <Step
           n="01"
           title="Paste a JD"
-          body="Sign in, create a job, get a shareable apply link."
+          body="Sign in, create a job with an application cap, get a shareable apply link."
         />
         <Step
           n="02"
           title="Candidates apply"
-          body="Name, email, phone, and a PDF or DOCX resume. No account needed."
+          body="Name, email, phone, and a PDF or DOCX resume. No account needed. Cap closes new submissions automatically."
         />
         <Step
           n="03"

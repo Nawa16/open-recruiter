@@ -17,7 +17,12 @@ type State =
   | { kind: "idle" }
   | { kind: "submitting" }
   | { kind: "ok" }
+  | { kind: "closed" }
   | { kind: "error"; message: string };
+
+function isCapReached(message: string | undefined): boolean {
+  return !!message && /application cap reached/i.test(message);
+}
 
 export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
   const [state, setState] = React.useState<State>({ kind: "idle" });
@@ -64,6 +69,11 @@ export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
       resume_path: resumePath,
     });
     if (insert.error) {
+      if (isCapReached(insert.error.message)) {
+        await supabase.storage.from("resumes").remove([resumePath]);
+        setState({ kind: "closed" });
+        return;
+      }
       setState({ kind: "error", message: insert.error.message });
       return;
     }
@@ -89,6 +99,19 @@ export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
         <p className="mt-2 text-sm text-[color:var(--color-muted-foreground)]">
           Thanks. Your resume is being scored by Gemini 2.5 Flash with Thinking
           Mode and added to the hiring manager&apos;s ranked list.
+        </p>
+      </div>
+    );
+  }
+
+  if (state.kind === "closed") {
+    return (
+      <div className="rounded-lg border border-[color:var(--color-border)] p-6">
+        <h2 className="text-sm font-semibold">Applications closed</h2>
+        <p className="mt-2 text-sm text-[color:var(--color-muted-foreground)]">
+          This role just reached its application cap while you were submitting.
+          Your resume was not stored. The hiring manager will reopen submissions
+          if they raise the cap.
         </p>
       </div>
     );

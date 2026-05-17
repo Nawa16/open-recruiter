@@ -25,7 +25,8 @@ This is **not a commercial product**: no paywalls, no telemetry, no feature gate
 /tests              Vitest unit + Playwright e2e
 README.md           Setup, deploy, troubleshooting
 PLAN.md             Live plan, kept current
-.env.example        GEMINI_API_KEY + 3 Supabase keys
+.env.example        GEMINI_API_KEY, 3 Supabase keys, RECRUITER_EMAIL, RECRUITER_PASSWORD
+instrumentation.ts  Provisions the recruiter account from env vars on server boot
 ```
 
 Setup details live in @README.md; the live plan lives in @PLAN.md.
@@ -68,7 +69,9 @@ Plus the model-name grep (see PLAN.md verification step 6 for the exact pattern)
 
 ## Scope reminders
 
-- No features beyond what's in PLAN.md / project spec. Resume preview, candidate emails, ATS integrations, analytics — all out of scope.
+- No features beyond what's in PLAN.md / project spec. Candidate emails, ATS integrations, analytics — all out of scope. Resume viewing is in scope via signed Supabase Storage URLs.
+- Auth is email+password only. No public signup. The single recruiter account is provisioned from `RECRUITER_EMAIL` / `RECRUITER_PASSWORD` env vars by `instrumentation.ts` on server boot.
+- Each job has a `max_applications` cap. A `BEFORE INSERT` trigger on `candidates` enforces it server-side; the public apply page renders "Applications closed" once full.
 - No abstractions for "future flexibility". One Gemini call site. One Supabase client factory module. No plugin systems, no provider patterns.
 - No comments, docstrings, or type annotations added to code you did not write or change.
 - No error handling for cases that cannot happen. Trust framework guarantees.

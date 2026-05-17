@@ -4,8 +4,11 @@ import {
   newJobSchema,
   parsedResumeSchema,
   scoreSchema,
+  signInSchema,
   parsedResumeResponseSchema,
   scoreResponseSchema,
+  DEFAULT_APPLICATION_CAP,
+  MAX_APPLICATION_CAP,
   MAX_RESUME_BYTES,
 } from "@/lib/schemas";
 
@@ -64,9 +67,59 @@ describe("newJobSchema", () => {
     ).toThrow();
   });
 
-  it("accepts a job", () => {
+  it("accepts a job and defaults maxApplications", () => {
     const job = { title: "Engineer", description: "Build stuff." };
-    expect(newJobSchema.parse(job)).toEqual(job);
+    const parsed = newJobSchema.parse(job);
+    expect(parsed.title).toBe("Engineer");
+    expect(parsed.description).toBe("Build stuff.");
+    expect(parsed.maxApplications).toBe(DEFAULT_APPLICATION_CAP);
+  });
+
+  it("coerces a string-form maxApplications", () => {
+    const parsed = newJobSchema.parse({
+      title: "Engineer",
+      description: "Build stuff.",
+      maxApplications: "25",
+    });
+    expect(parsed.maxApplications).toBe(25);
+  });
+
+  it("rejects a cap below 1", () => {
+    expect(() =>
+      newJobSchema.parse({
+        title: "Engineer",
+        description: "x",
+        maxApplications: 0,
+      }),
+    ).toThrow();
+  });
+
+  it("rejects a cap above the hard ceiling", () => {
+    expect(() =>
+      newJobSchema.parse({
+        title: "Engineer",
+        description: "x",
+        maxApplications: MAX_APPLICATION_CAP + 1,
+      }),
+    ).toThrow();
+  });
+});
+
+describe("signInSchema", () => {
+  it("accepts a real email and password", () => {
+    expect(
+      signInSchema.parse({ email: "r@example.com", password: "secret" }),
+    ).toEqual({ email: "r@example.com", password: "secret" });
+  });
+  it("rejects an invalid email", () => {
+    expect(() =>
+      signInSchema.parse({ email: "not-an-email", password: "secret" }),
+    ).toThrow();
+  });
+  it("rejects an empty password", () => {
+    expect(() =>
+      signInSchema.parse({ email: "r@example.com", password: "" }),
+    ).toThrow();
   });
 });
 

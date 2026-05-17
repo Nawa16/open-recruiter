@@ -1,23 +1,20 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase";
+import { signInSchema } from "@/lib/schemas";
 
-export async function signInWithEmail(formData: FormData) {
-  const email = String(formData.get("email") ?? "").trim();
-  if (!email) redirect("/?error=missing-email");
+export async function signInWithPassword(formData: FormData) {
+  const parsed = signInSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+  if (!parsed.success) redirect("/?error=missing-fields");
 
   const supabase = await createServerSupabase();
-  const origin = (await headers()).get("origin") ?? "http://localhost:3000";
-
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: { emailRedirectTo: `${origin}/auth/callback` },
-  });
-
+  const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) redirect(`/?error=${encodeURIComponent(error.message)}`);
-  redirect("/?sent=1");
+  redirect("/dashboard");
 }
 
 export async function signOut() {

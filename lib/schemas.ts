@@ -25,9 +25,24 @@ export const scoreSchema = z.object({
 
 export type Score = z.infer<typeof scoreSchema>;
 
+export const MIN_APPLICATION_CAP = 1;
+export const MAX_APPLICATION_CAP = 10000;
+export const DEFAULT_APPLICATION_CAP = 50;
+
 export const newJobSchema = z.object({
   title: z.string().min(1).max(200),
   description: z.string().min(1).max(20000),
+  maxApplications: z.coerce
+    .number()
+    .int()
+    .min(MIN_APPLICATION_CAP)
+    .max(MAX_APPLICATION_CAP)
+    .default(DEFAULT_APPLICATION_CAP),
+});
+
+export const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
 });
 
 export const MAX_RESUME_BYTES = 10 * 1024 * 1024;

@@ -15,6 +15,7 @@ export async function createJob(formData: FormData) {
   const parsed = newJobSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description"),
+    maxApplications: formData.get("maxApplications"),
   });
   if (!parsed.success) {
     redirect("/dashboard?error=invalid-input");
@@ -32,6 +33,7 @@ export async function createJob(formData: FormData) {
       slug: slugid(),
       title: parsed.data.title,
       description: parsed.data.description,
+      max_applications: parsed.data.maxApplications,
       created_by: user.id,
     })
     .select("id")
