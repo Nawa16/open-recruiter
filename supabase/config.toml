@@ -1,0 +1,4 @@
+project_id = "open-recruiter"
+
+[functions.score-candidate]
+verify_jwt = false
