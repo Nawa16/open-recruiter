@@ -45,6 +45,8 @@ export const signInSchema = z.object({
   password: z.string().min(1),
 });
 
+export const editJobSchema = newJobSchema;
+
 export const MAX_RESUME_BYTES = 10 * 1024 * 1024;
 
 export const candidateFormSchema = z.object({

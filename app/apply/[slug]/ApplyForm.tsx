@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { CheckCircle2, FileText, Loader2, Lock, Send } from "lucide-react";
 import { customAlphabet } from "nanoid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,9 +95,12 @@ export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
 
   if (state.kind === "ok") {
     return (
-      <div className="rounded-lg border border-[color:var(--color-border)] p-6">
-        <h2 className="text-sm font-semibold">Application received</h2>
-        <p className="mt-2 text-sm text-[color:var(--color-muted-foreground)]">
+      <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6 shadow-[var(--shadow-soft)]">
+        <span className="grid h-9 w-9 place-items-center rounded-lg bg-[color:var(--color-success-soft)] text-[color:var(--color-success)]">
+          <CheckCircle2 className="h-4 w-4" aria-hidden />
+        </span>
+        <h2 className="mt-3 text-base font-semibold">Application received</h2>
+        <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-muted-foreground)]">
           Thanks. Your resume is being scored by Gemini 2.5 Flash with Thinking
           Mode and added to the hiring manager&apos;s ranked list.
         </p>
@@ -106,9 +110,12 @@ export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
 
   if (state.kind === "closed") {
     return (
-      <div className="rounded-lg border border-[color:var(--color-border)] p-6">
-        <h2 className="text-sm font-semibold">Applications closed</h2>
-        <p className="mt-2 text-sm text-[color:var(--color-muted-foreground)]">
+      <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6 shadow-[var(--shadow-soft)]">
+        <span className="grid h-9 w-9 place-items-center rounded-lg bg-[color:var(--color-primary-soft)] text-[color:var(--color-khuzama-700)] dark:text-[color:var(--color-khuzama-300)]">
+          <Lock className="h-4 w-4" aria-hidden />
+        </span>
+        <h2 className="mt-3 text-base font-semibold">Applications closed</h2>
+        <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-muted-foreground)]">
           This role just reached its application cap while you were submitting.
           Your resume was not stored. The hiring manager will reopen submissions
           if they raise the cap.
@@ -120,22 +127,32 @@ export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="space-y-4 rounded-lg border border-[color:var(--color-border)] p-6"
+      className="space-y-4 rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6 shadow-[var(--shadow-soft)]"
     >
-      <h2 className="text-sm font-semibold">Apply</h2>
-      <div className="space-y-1">
+      <div className="flex items-center gap-2">
+        <span className="grid h-9 w-9 place-items-center rounded-lg bg-[color:var(--color-primary-soft)] text-[color:var(--color-khuzama-700)] dark:text-[color:var(--color-khuzama-300)]">
+          <FileText className="h-4 w-4" aria-hidden />
+        </span>
+        <div>
+          <h2 className="text-base font-semibold leading-none">Apply</h2>
+          <p className="mt-1 text-xs text-[color:var(--color-muted-foreground)]">
+            No account needed. Takes 30 seconds.
+          </p>
+        </div>
+      </div>
+      <div className="space-y-1.5">
         <Label htmlFor="fullName">Full name</Label>
         <Input id="fullName" name="fullName" required maxLength={120} />
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" required />
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="phone">Phone</Label>
         <Input id="phone" name="phone" type="tel" required maxLength={40} />
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="file">Resume (PDF or DOCX, ≤10 MB)</Label>
         <Input
           id="file"
@@ -151,10 +168,20 @@ export function ApplyForm({ slug, jobId }: { slug: string; jobId: string }) {
         className="w-full"
         disabled={state.kind === "submitting"}
       >
-        {state.kind === "submitting" ? "Submitting…" : "Submit application"}
+        {state.kind === "submitting" ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            Submitting…
+          </>
+        ) : (
+          <>
+            <Send className="h-4 w-4" aria-hidden />
+            Submit application
+          </>
+        )}
       </Button>
       {state.kind === "error" ? (
-        <p className="text-xs text-[color:var(--color-destructive)]">
+        <p className="rounded-md bg-[color:var(--color-destructive-soft)] px-3 py-2 text-xs text-[color:var(--color-destructive)]">
           {state.message}
         </p>
       ) : null}

@@ -3,23 +3,30 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-ring)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-medium leading-none transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-background)] disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-[color:var(--color-accent)] text-[color:var(--color-accent-foreground)] hover:opacity-90",
+          "bg-[color:var(--color-primary)] text-[color:var(--color-primary-foreground)] shadow-[var(--shadow-soft)] hover:bg-[color:var(--color-primary-hover)] hover:shadow-[var(--shadow-lift)] active:translate-y-px",
         outline:
-          "border border-[color:var(--color-border)] bg-transparent hover:bg-[color:var(--color-muted)]",
-        ghost: "hover:bg-[color:var(--color-muted)]",
+          "border border-[color:var(--color-border)] bg-[color:var(--color-surface)] text-[color:var(--color-foreground)] hover:border-[color:var(--color-khuzama-300)] hover:bg-[color:var(--color-primary-soft)]",
+        soft:
+          "bg-[color:var(--color-primary-soft)] text-[color:var(--color-khuzama-700)] hover:bg-[color:var(--color-khuzama-200)] dark:text-[color:var(--color-khuzama-300)]",
+        ghost:
+          "text-[color:var(--color-foreground)] hover:bg-[color:var(--color-primary-soft)]",
         destructive:
-          "bg-[color:var(--color-destructive)] text-white hover:opacity-90",
+          "bg-[color:var(--color-destructive)] text-white shadow-[var(--shadow-soft)] hover:opacity-90 active:translate-y-px",
+        "destructive-outline":
+          "border border-[color:var(--color-destructive)]/30 bg-[color:var(--color-destructive-soft)] text-[color:var(--color-destructive)] hover:border-[color:var(--color-destructive)]/60",
       },
       size: {
+        xs: "h-7 px-2.5 text-xs",
         sm: "h-8 px-3",
         md: "h-9 px-4",
-        lg: "h-10 px-6",
+        lg: "h-11 px-6 text-base",
         icon: "h-8 w-8",
+        "icon-sm": "h-7 w-7",
       },
     },
     defaultVariants: { variant: "default", size: "md" },
@@ -39,3 +46,5 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ),
 );
 Button.displayName = "Button";
+
+export { buttonVariants };

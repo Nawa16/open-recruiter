@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function TopNStepper({
@@ -22,6 +23,7 @@ export function TopNStepper({
   const visible = items.slice(0, Math.min(n, total));
   const dec = () => setN((v) => Math.max(min, v - step));
   const inc = () => setN((v) => Math.min(max, v + step));
+  const shown = Math.min(n, total);
 
   return (
     <div className="space-y-3">
@@ -33,35 +35,35 @@ export function TopNStepper({
           <Button
             type="button"
             variant="outline"
-            size="icon"
+            size="icon-sm"
             onClick={dec}
             disabled={n <= min}
             aria-label="Show fewer"
           >
-            −
+            <Minus className="h-3.5 w-3.5" aria-hidden />
           </Button>
           <span
-            className="min-w-[2ch] text-center font-medium tabular-nums"
+            className="min-w-[2ch] text-center font-semibold tabular-nums text-[color:var(--color-foreground)]"
             data-testid="topn-value"
           >
-            {Math.min(n, total)}
+            {shown}
           </span>
           <Button
             type="button"
             variant="outline"
-            size="icon"
+            size="icon-sm"
             onClick={inc}
             disabled={n >= max}
             aria-label="Show more"
           >
-            +
+            <Plus className="h-3.5 w-3.5" aria-hidden />
           </Button>
           <span className="text-[color:var(--color-muted-foreground)]">
-            of {total} candidates
+            of {total} candidate{total === 1 ? "" : "s"}
           </span>
         </div>
       </div>
-      <div className="space-y-2">{visible}</div>
+      <div className="space-y-2.5">{visible}</div>
     </div>
   );
 }
