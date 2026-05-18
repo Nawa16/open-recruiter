@@ -3,17 +3,12 @@
 > A free, MIT-licensed, self-hostable recruiter portal. Paste a job description, share a public apply link, get a ranked list of candidates — scored 0–100 by **Gemini 2.5 Flash with Thinking Mode**.
 
 <p align="center">
-  <a href="https://***">
-    <img src="docs/screenshots/01-homepage.png" alt="open-recruiter homepage" width="100%" />
-  </a>
+  <img src="docs/screenshots/01-homepage.png" alt="open-recruiter homepage" width="100%" />
 </p>
 
 <p align="center">
-  <strong>Live demo →</strong>
-  <a href="https://***">***</a>
-  &nbsp;·&nbsp;
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FNawa16%2Fopen-recruiter&env=GEMINI_API_KEY,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,RECRUITER_EMAIL,RECRUITER_PASSWORD&envDescription=Gemini%20key%2C%20Supabase%20keys%2C%20and%20the%20single%20recruiter%20account&project-name=open-recruiter">
-    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+    <img src="https://vercel.com/button" alt="Deploy your own to Vercel" />
   </a>
 </p>
 
