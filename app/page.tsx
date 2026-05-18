@@ -26,7 +26,7 @@ export default async function HomePage({
           open-recruiter
         </Link>
         <a
-          href="https://github.com/open-recruiter/open-recruiter"
+          href="https://github.com/Nawa16/open-recruiter"
           className="inline-flex items-center gap-1.5 text-sm text-[color:var(--color-muted-foreground)] hover:text-[color:var(--color-foreground)]"
           target="_blank"
           rel="noreferrer"

@@ -18,3 +18,5 @@ test-results/
 
 supabase/.branches
 supabase/.temp
+
+.claude/settings.local.json
